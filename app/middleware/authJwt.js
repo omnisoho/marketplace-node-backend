@@ -24,7 +24,22 @@ const verifyToken = (req, res, next) => {
   });
 };
 
+const getUserFromToken = (req, res) => {
+  const bearerToken = req.headers.authorization;
+  let decoded;
+  const token = bearerToken.split(' ')[1];
+  try {
+    decoded = jwt.verify(token, config.secret);
+  } catch (err) {
+    return res.status(401).send('unauthorized');
+  }
+  const userId = decoded.id;
+  console.log(userId);
+  return userId;
+};
+
 const authJwt = {
   verifyToken,
+  getUserFromToken,
 };
 module.exports = authJwt;

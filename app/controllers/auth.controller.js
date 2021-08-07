@@ -5,7 +5,7 @@ const config = require('../config/auth.config');
 
 const User = db.user;
 
-exports.signup = (req, res) => {
+const signup = (req, res) => {
   // Save User to Database
   User.create({
     username: req.body.username,
@@ -22,7 +22,7 @@ exports.signup = (req, res) => {
     });
 };
 
-exports.signin = (req, res) => {
+const signin = (req, res) => {
   User.findOne({
     where: {
       username: req.body.username,
@@ -59,4 +59,9 @@ exports.signin = (req, res) => {
     .catch((err) => {
       res.status(500).send({ message: err.message });
     });
+};
+
+module.exports = {
+  signup,
+  signin,
 };
