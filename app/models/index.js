@@ -21,6 +21,7 @@ db.sequelize = sequelize;
 
 db.user = require('./user.model')(sequelize, Sequelize);
 db.products = require('./product.model')(sequelize, Sequelize);
+db.images = require('./image.model')(sequelize, Sequelize);
 
 db.products.belongsTo(db.user, {
   foreignKey: 'userId',

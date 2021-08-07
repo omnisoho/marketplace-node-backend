@@ -16,6 +16,12 @@ app.get('/', (req, res) => {
 require('./app/routes/auth.routes')(app);
 // product routes
 require('./app/routes/product.routes')(app);
+// image upload routes
+require('./app/routes/upload.routes')(app);
+
+// public folder
+global.baseDir = __dirname;
+app.use(express.static('./public/uploads'));
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
