@@ -24,11 +24,11 @@ const uploadFiles = async (req, res) => {
       );
 
       // return filename if successful
-      return res.send(req.file.filename);
+      return res.status(200).send(req.file.filename);
     });
   } catch (error) {
     console.log(error);
-    return res.send(`Error when trying upload images: ${error}`);
+    return res.status(500).send(`Error when to trying upload images: ${error}`);
   }
 };
 

@@ -14,7 +14,7 @@ const signup = (req, res) => {
   })
     .then((user) => {
       if (user) {
-        res.send({ message: 'User is registered successfully!' });
+        res.status(200).send({ message: 'User is registered successfully!' });
       }
     })
     .catch((err) => {

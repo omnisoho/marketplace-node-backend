@@ -2,14 +2,13 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/auth.config');
 
 const verifyToken = (req, res, next) => {
-  //   let token = req.headers["x-access-token"];
   const bearerToken = req.headers.authorization;
   const token = bearerToken.split(' ')[1];
   console.log('verify token', token);
 
   if (!token) {
     return res.status(403).send({
-      message: 'No token provided!',
+      message: 'Forbben. No token provided!',
     });
   }
 

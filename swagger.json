@@ -1,0 +1,301 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is the documentation of the Marketplace server APIs",
+    "version": "1.0.0",
+    "title": "Marketplace"
+  },
+  "tags": [
+    {
+      "name": "product",
+      "description": "Product to buy or sell on the marketplace"
+    },
+    {
+      "name": "auth",
+      "description": "Authentication covering signin & signup"
+    },
+    {
+      "name": "upload",
+      "description": "Image file upload for product"
+    }
+  ],
+  "paths": {
+    "/api/products": {
+      "post": {
+        "tags": ["product"],
+        "summary": "Add a new product to sell on the marketplace",
+        "description": "",
+        "operationId": "addProduct",
+
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Product object that needs to be added to the marketplace",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product is added successfully"
+          },
+          "400": {
+            "description": "Content cannot be empty"
+          },
+          "401": {
+            "description": "Unauthorized access"
+          },
+          "403": {
+            "description": "Forbidden access or no bearer token provided"
+          },
+          "404": {
+            "description": "User Not found"
+          },
+          "500": {
+            "description": "Error while creating the Product"
+          }
+        }
+      },
+      "get": {
+        "tags": ["product"],
+        "summary": "Get all the user's products on the marketplace",
+        "description": "",
+        "operationId": "allMyProducts",
+
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized access"
+          },
+          "403": {
+            "description": "Forbidden access or no bearer token provided"
+          },
+          "500": {
+            "description": "Error while creating the Product"
+          }
+        }
+      }
+    },
+    "/api/products/{id}": {
+      "put": {
+        "tags": ["product"],
+        "summary": "Update an existing product's status and buyer",
+        "description": "",
+        "operationId": "updateProductStatus",
+
+        "parameters": [
+          {
+            "name": "id",
+            "description": "ID of product that is to be updated from status 'Available' to 'Sold'",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized access"
+          },
+          "403": {
+            "description": "Forbidden access or no bearer token provided"
+          },
+          "500": {
+            "description": "Error updating Product"
+          }
+        }
+      }
+    },
+    "/api/products/search?name=${name}": {
+      "get": {
+        "tags": ["product"],
+        "summary": "Get and search/filter other users' products on the marketplace",
+        "description": "",
+        "operationId": "allOtherProducts",
+
+        "parameters": [
+          {
+            "name": "name",
+            "description": "search other users' products by product name",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized access"
+          },
+          "403": {
+            "description": "Forbidden access or no bearer token provided"
+          },
+          "500": {
+            "description": "Error while creating the Product"
+          }
+        }
+      }
+    },
+    "/api/auth/signup": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Create a new user from signup",
+        "description": "",
+        "operationId": "addUser",
+
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object that is need to create new user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserSignup"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User is registered successfully"
+          },
+          "500": {
+            "description": "Error while creating the User."
+          }
+        }
+      }
+    },
+    "/api/auth/signin": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Sign in for a user from login data",
+        "description": "",
+        "operationId": "signinUser",
+
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object to authenicate user for signin to application",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserSignin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User is signed in successfully"
+          },
+          "401": {
+            "description": "Invalid password"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Error while creating the User."
+          }
+        }
+      }
+    },
+    "/api/upload": {
+      "post": {
+        "tags": ["upload"],
+        "summary": "Upload an image for a product",
+        "description": "",
+        "operationId": "uploadImage",
+        "consumes": ["multipart/form-data"],
+
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "file",
+            "type": "file",
+            "description": "Image file that to be uploaded",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Image is uploaded succesfully"
+          },
+          "500": {
+            "description": "Error when trying to upload images"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "UserSignup": {
+      "required": ["username", "email", "password"],
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "example": "David Sim"
+        },
+        "email": {
+          "type": "string",
+          "example": "davisSim@yahoo.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "******"
+        }
+      },
+      "xml": {
+        "name": "UserSignup"
+      }
+    },
+    "UserSignin": {
+      "required": ["username", "password"],
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "example": "David Sim"
+        },
+        "password": {
+          "type": "string",
+          "example": "******"
+        }
+      },
+      "xml": {
+        "name": "UserSignin"
+      }
+    },
+    "Product": {
+      "type": "object",
+      "required": ["name", "price"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "1960 vintage watch"
+        },
+        "description": {
+          "type": "string",
+          "example": "This is a watch kept in pristine condition and passed down as a family heirloom"
+        },
+        "price": {
+          "type": "number",
+          "format": "float",
+          "example": 2000.0
+        },
+        "imageUrl": {
+          "type": "string",
+          "example": "000190242.png"
+        }
+      },
+      "xml": {
+        "name": "Product"
+      }
+    }
+  }
+}

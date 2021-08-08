@@ -15,7 +15,7 @@ const create = (req, res) => {
   // Validate request
   if (!req.body.name) {
     res.status(400).send({
-      message: 'Content can not be empty!',
+      message: 'Content cannot be empty!',
     });
     return;
   }
@@ -47,8 +47,7 @@ const create = (req, res) => {
         })
         .catch((err) => {
           res.status(500).send({
-            message:
-              err.message || 'Some error occurred while creating the Product.',
+            message: err.message || 'Error while creating the Product.',
           });
         });
     })
@@ -62,15 +61,13 @@ const findAll = (req, res) => {
   console.log('findAllMine');
   const userId = getUser(req);
 
-  const { name } = req.query;
-  // var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
-  const condition1 = name ? { name: { [Op.like]: `%${name}%` } } : null;
+  const condition1 = userId ? { buyerId: { [Op.eq]: userId } } : null;
   const condition2 = userId ? { userId } : null;
-  const condition = { [Op.and]: [condition1, condition2] };
+  const condition = { [Op.or]: [condition1, condition2] };
 
   Product.findAll({
     where: condition,
-    include: ['buyer', 'user'],
+    include: ['buyer'],
   })
     .then((data) => {
       res.send(data);
@@ -88,7 +85,6 @@ const findAllOthers = (req, res) => {
   const userId = getUser(req);
 
   const { name } = req.query;
-  // var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
   const condition1 = name ? { name: { [Op.like]: `%${name}%` } } : null;
   const condition2 = userId ? { userId: { [Op.not]: userId } } : null;
   const condition = { [Op.and]: [condition1, condition2] };

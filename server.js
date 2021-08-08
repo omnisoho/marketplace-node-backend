@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
 
 const app = express();
 
@@ -44,3 +45,8 @@ db.sequelize.sync({ force: true }).then(() => {
   console.log('Drop and re-sync db.');
   initial();
 });
+
+// swagger config
+const swaggerDoc = require('./swagger.json');
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
