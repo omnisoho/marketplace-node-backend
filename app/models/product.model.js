@@ -15,6 +15,10 @@ module.exports = (sequelize, Sequelize) => {
     imageUrl: {
       type: Sequelize.STRING,
     },
+    status: {
+      type: Sequelize.ENUM('Available', 'Sold'),
+      defaultValue: 'Available',
+    },
   });
 
   return Product;

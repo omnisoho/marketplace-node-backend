@@ -12,5 +12,8 @@ module.exports = (app) => {
   // Retrieve all Others Products
   router.get('/search', [authJwt.verifyToken], products.findAllOthers);
 
+  // Update an existing Product
+  router.put('/:id', [authJwt.verifyToken], products.updateStatus);
+
   app.use('/api/products', router);
 };

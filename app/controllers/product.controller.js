@@ -10,8 +10,6 @@ const User = db.user;
 // Create and Save a new Product
 const create = (req, res) => {
   console.log('req', req.body);
-  console.log('headers auth', req.headers.authorization);
-
   const userId = getUser(req);
 
   // Validate request
@@ -70,7 +68,10 @@ const findAll = (req, res) => {
   const condition2 = userId ? { userId } : null;
   const condition = { [Op.and]: [condition1, condition2] };
 
-  Product.findAll({ where: condition })
+  Product.findAll({
+    where: condition,
+    include: ['buyer', 'user'],
+  })
     .then((data) => {
       res.send(data);
     })
@@ -103,8 +104,42 @@ const findAllOthers = (req, res) => {
     });
 };
 
+// Update a Product by the id in the request
+const updateStatus = (req, res) => {
+  const { id } = req.params;
+  const buyerId = getUser(req);
+
+  Product.update(
+    {
+      buyerId,
+      status: 'Sold',
+    },
+    {
+      where: { id },
+    }
+  )
+    .then((num) => {
+      if (num === 1) {
+        res.send({
+          message: 'Product updated successfully.',
+        });
+      } else {
+        res.send({
+          message: `Cannot update Product with id=${id}. Maybe Product was not found or req.body is empty!`,
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({
+        message: `Error updating Product with id=${id}`,
+      });
+    });
+};
+
 module.exports = {
   create,
   findAll,
   findAllOthers,
+  updateStatus,
 };
