@@ -42,3 +42,7 @@ How to start the application
 node server.js
 ```
 The database tables will be generated upon server start and removed upon server stop.
+
+## Documentation
+
+APIs and database documentation files are under /docs folder
