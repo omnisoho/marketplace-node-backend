@@ -28,7 +28,7 @@ require('./app/routes/upload.routes')(app);
 
 // public folder
 global.baseDir = __dirname;
-app.use(express.static('./public/uploads'));
+app.use(express.static('./public/images/uploads'));
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
