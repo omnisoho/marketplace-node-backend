@@ -41,8 +41,10 @@ How to start the application
 ```
 node server.js
 ```
+The server will be running on http://localhost:8080
 The database tables will be generated upon server start and removed upon server stop.
 
 ## Documentation
 
 APIs and database documentation files are under /docs folder
+The Apis can also be referenced at http://localhost:8080/api-docs
